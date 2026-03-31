@@ -7,12 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/HarishGit08/Tomato-Frontend.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
@@ -32,6 +26,15 @@ pipeline {
             steps {
                 sh 'docker run -d -p 80:80 --name $CONTAINER_NAME $IMAGE_NAME'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful'
+        }
+        failure {
+            echo 'Deployment failed'
         }
     }
 }
